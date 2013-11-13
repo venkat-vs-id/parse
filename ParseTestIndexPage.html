@@ -1,0 +1,80 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <title>My Parse Page</h1></title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
+</head>
+
+<body>
+  
+
+    <h1 align="center">My Parse Page!</h1>
+
+  <script type="text/javascript">
+    Parse.initialize("YOUR_APPLICATION_ID", "YOUR_JAVASCRIPT_KEY");
+    
+    
+    // -------------- Testing Loggin Function -------------------------
+    console.log("Parse.User.current() >>>" + Parse.User.current());
+    var l_user= Parse.User.logIn("admin", "admin", { // enter the user-id and pwd
+	  success: function(user) {
+    	//alert(' all good');
+    	console.log("Parse.User.current()- inside >>>" + user.getUsername());
+  	  },
+  	  error: function(user, error) {
+        // The login failed. Check error to see why.
+  	  }
+	});
+	
+	
+    // -------------- Testing Cloud Code Hello World -------------------------	
+    
+   Parse.Cloud.run('<CC code Name>', { param-1: param-value, param-2:param-value2,  param-3:param-value3}, {
+	  success: function(result) {
+    	 console.log(">>>>");
+    	 console.log("result>>>>"+result);
+    	 
+    	 document.write("<table border=1>");
+    	 var ix= 0;
+    	 for (var i in result)
+		 { 
+		 	 console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=");
+		 	 
+  			 if(ix==0){
+			 	 document.write("<tr>");
+				 for (var k in result[i].attributes){
+  				    console.log("k>>>>"+ k);
+  			    	document.write("<td>");
+  			    	document.write(k);
+  			    	document.write("</td>");
+  			    }
+  			    document.write("</tr>");
+			 }
+			 ix= 1;
+			 	 
+			 	 document.write("<tr>");
+				 for (var k in result[i].attributes){
+  				    console.log("k>>>>"+ k);
+  			    	document.write("<td>");
+  			    	document.write(result[i].get(k) );
+  			    	document.write("</td>");
+  			    }
+  			    document.write("</tr>");
+			 
+			 //console.log("result - value>>>>"+ JSON.stringify(result[i]));
+			//console.log("result - value>>>>"+ result[i].attributes.City);
+			console.log("result - value>>>>"+ result[i].get('City'));
+			
+		 	document.write("</tr>");			
+		 }
+		 document.write("</table>");
+  	  },
+  	  error: function(error) {
+  	  }
+   });
+
+  </script>
+</body>
+
+</html>
